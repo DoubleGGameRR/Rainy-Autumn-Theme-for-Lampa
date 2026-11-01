@@ -91,6 +91,6 @@ add('enabled','Rainy Autumn Theme','trigger',null,true);add('rain','Rain on glas
 add('rain_amount','Rain intensity','select',[{title:'Light',value:16},{title:'Medium',value:34},{title:'Heavy',value:52}],34);
 add('leaf_amount','Leaves amount','select',[{title:'Few',value:5},{title:'Medium',value:9},{title:'More',value:14}],9);}
 function init(){if(!document.body)return;settings();apply();}
-if(window.Lampa){Lampa.Manifest=Lampa.Manifest||{plugins:{}};Lampa.Manifest.plugins=Lampa.Manifest.plugins||{};Lampa.Manifest.plugins.rainy_autumn_theme={name:'Rainy Autumn Theme',version:'1.0.3',description:'Rain, golden leaves and soft autumn mist.'};if(Lampa.Listener&&Lampa.Listener.follow)Lampa.Listener.follow('app',function(e){if(e.type==='ready')init();});}
+if(window.Lampa){Lampa.Manifest=Lampa.Manifest||{plugins:{}};Lampa.Manifest.plugins=Lampa.Manifest.plugins||{};Lampa.Manifest.plugins.rainy_autumn_theme={name:'Rainy Autumn Theme',version:'1.0.4',description:'Rain, golden leaves and soft autumn mist.'};if(Lampa.Listener&&Lampa.Listener.follow)Lampa.Listener.follow('app',function(e){if(e.type==='ready')init();});}
 if(document.readyState==='complete'||document.readyState==='interactive')setTimeout(init,0);else document.addEventListener('DOMContentLoaded',init,false);
 })();
