@@ -30,11 +30,11 @@ var css=[
 '@keyframes ratl-drift{0%{transform:translateX(-5%)}100%{transform:translateX(8%)}}',
 '@media(prefers-reduced-motion:reduce){#'+LAYER+' .ratl-drop{animation:none!important;top:25%!important;opacity:.75!important}#'+LAYER+' .ratl-leaf{animation:none!important;top:20%!important;opacity:.85!important}#'+LAYER+' .ratl-fog{animation:none!important}}'
 ].join('\n');
-var frame=0, canvas=null, ctx=null, drops=[], leafItems=[];
+var frame=0, canvas=null, ctx=null, drops=[], leafItems=[], fogPhase=0;
 function random(min,max){return min+Math.random()*(max-min);}
 function resizeCanvas(){
  if(!canvas)return;
- var ratio=Math.min(window.devicePixelRatio||1,1.5);
+ var ratio=Math.min(window.devicePixelRatio||1,2);
  canvas.width=Math.max(1,Math.floor(window.innerWidth*ratio));
  canvas.height=Math.max(1,Math.floor(window.innerHeight*ratio));
  canvas.style.width='100%';canvas.style.height='100%';
@@ -46,11 +46,22 @@ function draw(){
  if(!ctx||!canvas)return;
  var w=window.innerWidth,h=window.innerHeight;
  ctx.clearRect(0,0,w,h);
+ if(on('mist',true)){
+  fogPhase+=0.0022;
+  for(var f=0;f<3;f++){
+   var drift=Math.sin(fogPhase+f*2.1), driftY=Math.cos(fogPhase*.7+f)*7;
+   var fx=w*(.18+f*.31)+drift*w*.035, fy=h*(.36+(f%2)*.27)+driftY;
+   var radius=w*(.22+f*.035);
+   var haze=ctx.createRadialGradient(fx,fy,0,fx,fy,radius);
+   haze.addColorStop(0,'rgba(190,207,207,.038)');haze.addColorStop(.55,'rgba(174,195,198,.018)');haze.addColorStop(1,'rgba(174,195,198,0)');
+   ctx.fillStyle=haze;ctx.fillRect(0,Math.max(0,fy-radius),w,Math.min(h,fy+radius)-Math.max(0,fy-radius));
+  }
+ }
  if(on('rain',true)){
-  ctx.lineWidth=1.25;ctx.strokeStyle='rgba(211,231,238,.72)';
+  ctx.lineWidth=.65;ctx.strokeStyle='rgba(211,231,238,.28)';
   for(var i=0;i<drops.length;i++){
-   var d=drops[i];ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x-5,d.y+d.len);ctx.stroke();
-   d.x-=d.speed*.18;d.y+=d.speed;
+   var d=drops[i];ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x-2,d.y+d.len);ctx.stroke();
+   d.x-=d.speed*.08;d.y+=d.speed;
    if(d.y>h+20){d.y=-random(20,h*.3);d.x=random(0,w);}
   }
  }
@@ -76,7 +87,7 @@ function mount(){
  var w=window.innerWidth,h=window.innerHeight;
  var rainCount=on('rain',true)?count(get('rain_amount',42),18,85):0;
  var leafCount=on('leaves',true)?count(get('leaf_amount',14),7,24):0;
- for(var i=0;i<rainCount;i++)drops.push({x:random(0,w),y:random(-h,h),len:random(22,58),speed:random(7,15)});
+ for(var i=0;i<rainCount;i++)drops.push({x:random(0,w),y:random(-h,h),len:random(10,25),speed:random(3.2,6.2)});
  var colors=['#f6c34f','#e6a52f','#d98227','#f2d477','#bd7027'];
  for(var j=0;j<leafCount;j++)leafItems.push({x:random(0,w),y:random(-h,h),size:random(9,17),speed:random(1.1,2.8),wind:random(-.9,.9),angle:random(0,6.28),spin:random(-.025,.025),color:colors[j%colors.length]});
  if(window.addEventListener)window.addEventListener('resize',resizeCanvas,false);
@@ -88,6 +99,6 @@ add('enabled','Rainy Autumn Theme','trigger',null,true);add('rain','Rain on glas
 add('rain_amount','Rain intensity','select',[{title:'Light',value:16},{title:'Medium',value:34},{title:'Heavy',value:52}],34);
 add('leaf_amount','Leaves amount','select',[{title:'Few',value:5},{title:'Medium',value:9},{title:'More',value:14}],9);}
 function init(){if(!document.body)return;settings();apply();}
-if(window.Lampa){Lampa.Manifest=Lampa.Manifest||{plugins:{}};Lampa.Manifest.plugins=Lampa.Manifest.plugins||{};Lampa.Manifest.plugins.rainy_autumn_theme={name:'Rainy Autumn Theme',version:'1.0.2',description:'Rain, golden leaves and soft autumn mist.'};if(Lampa.Listener&&Lampa.Listener.follow)Lampa.Listener.follow('app',function(e){if(e.type==='ready')init();});}
+if(window.Lampa){Lampa.Manifest=Lampa.Manifest||{plugins:{}};Lampa.Manifest.plugins=Lampa.Manifest.plugins||{};Lampa.Manifest.plugins.rainy_autumn_theme={name:'Rainy Autumn Theme',version:'1.0.3',description:'Rain, golden leaves and soft autumn mist.'};if(Lampa.Listener&&Lampa.Listener.follow)Lampa.Listener.follow('app',function(e){if(e.type==='ready')init();});}
 if(document.readyState==='complete'||document.readyState==='interactive')setTimeout(init,0);else document.addEventListener('DOMContentLoaded',init,false);
 })();
