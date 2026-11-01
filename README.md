@@ -1,15 +1,16 @@
 # Rainy Autumn Theme for Lampa
 
-A standalone autumn visual theme with a canvas-rendered rainy atmosphere.
+A standalone autumn visual theme with fine rain, drifting mist and falling golden leaves.
 
 ## Features
-- Animated rain streaks drawn on a dedicated transparent canvas
-- Falling yellow and golden leaves with rotation and drifting motion
+- Fine, translucent, slower rain streaks
+- Three layers of soft mist with extremely subtle horizontal drift
+- Falling yellow and golden leaves
 - Cool rainy blue-grey palette with warm amber highlights
 - Independent switches for theme, rain, leaves and mist
 - Adjustable rain and leaf density
 - No external images, fonts, libraries, tracking or network requests
-- Canvas overlay does not capture remote-control input
+- Canvas renderer scales with device pixel ratio (capped at 2) for high-resolution displays
 
 ## Install
 Add this URL in Lampa:
@@ -19,7 +20,7 @@ https://cdn.jsdelivr.net/gh/DoubleGGameRR/Rainy-Autumn-Theme-for-Lampa@main/rain
 ```
 
 ## Compatibility
-Uses standard Canvas 2D and requestAnimationFrame APIs available in modern TV browsers. The animation uses a capped pixel ratio and modest particle counts for TV hardware.
+Uses standard Canvas 2D and requestAnimationFrame APIs. Particle counts and pixel ratio are capped to keep animation reasonable on TV hardware.
 
 ## License
 MIT
